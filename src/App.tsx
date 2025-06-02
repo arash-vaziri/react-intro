@@ -1,6 +1,10 @@
+import { useState } from "react";
 import ExpandableText from "./components/ExpandableText";
 import { Expences } from "./components/Expences";
+import { ExpenseList } from "./components/ExpenseTracker/ExpenseList";
 import FormE2 from "./components/FormE2";
+import { ExpenseFilter } from "./components/ExpenseTracker/ExpenseFilter";
+import { ExpenseForm } from "./components/ExpenseTracker/ExpenseForm";
 
 function App() {
   // <ExpandableText maxChar={50}>
@@ -8,9 +12,39 @@ function App() {
   // </ExpandableText>
   //<FormE2></FormE2>
 
+  const [selectedCat, setSelectedCat] = useState("");
+
+  const [expences, setExpences] = useState([
+    { id: 1, amount: 4.5, category: "Groceries", description: "Butter" },
+    { id: 2, amount: 5, category: "Utilities", description: "Lamp" },
+    { id: 3, amount: 40, category: "Entertainment", description: "XBOX TMNT" },
+  ]);
+
+  const removeItem = (id: number) => {
+    setExpences(expences.filter((item) => item.id !== id));
+  };
+
+  const visibleCategory =
+    selectedCat !== ""
+      ? expences.filter((item) => item.category == selectedCat)
+      : expences;
+
   return (
     <div>
-      <Expences></Expences>
+      <div className="mb-3">
+        <ExpenseForm
+          onSubmit={(data) =>
+            setExpences([...expences, { ...data, id: expences.length + 1 }])
+          }
+        ></ExpenseForm>
+      </div>
+      <ExpenseFilter
+        setCategory={(category) => setSelectedCat(category)}
+      ></ExpenseFilter>
+      <ExpenseList
+        onRemove={(id) => removeItem(id)}
+        expences={visibleCategory}
+      />
     </div>
   );
 }

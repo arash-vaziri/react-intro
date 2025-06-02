@@ -19,7 +19,7 @@ export const Expences = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   const onSubmit = (data: FieldValues) => {
@@ -96,39 +96,6 @@ export const Expences = () => {
           Submit
         </button>
       </form>
-      <hr />
-      <table className="table table-bordered">
-        <thead>
-          <tr>
-            <th scope="col">Description</th>
-            <th scope="col">Amount</th>
-            <th scope="col">Category</th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {expences.map((item: FormData, index: number) => {
-            return (
-              <tr key={`row_${index}`}>
-                <td> {item.description} </td>
-                <td> {item.amount} $</td>
-                <td> {categories[item.categoryId]}</td>
-                <td>
-                  <button
-                    type="button"
-                    className="btn btn-danger"
-                    onClick={() => {
-                      removeItem(index);
-                    }}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
     </>
   );
 };
